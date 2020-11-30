@@ -40,15 +40,17 @@ protected:
     int height;
     int bytespp;
 
-    bool   load_rle_data(std::ifstream &in);
+    bool load_rle_data(std::ifstream &in);
     bool unload_rle_data(std::ofstream &out) const;
-    bool unload_rle_data(std::ofstream &out) const;
+
+	bool safe_write(std::ofstream &out, char* const buffer, size_t write_len) const;
+
 public:
  	enum Format { GRAYSCALE=1, RGB=3, RGBA=4 };
 
     FcImage();
     FcImage(const int w, const int h, const int bpp);
-    bool  read_tga_file(const std::string filename);
+    bool read_tga_file(const std::string filename);
     bool write_tga_file(const std::string filename, const bool vflip=true, const bool rle=true) const;
     void flip_horizontally();
     void flip_vertically();
@@ -59,7 +61,10 @@ public:
     int get_height() const;
     int get_bytespp();
     std::uint8_t *buffer();
+	std::uint8_t *buffer() const;
     void clear();
+
+	
 
 };
 
