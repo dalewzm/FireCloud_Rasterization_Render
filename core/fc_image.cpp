@@ -21,7 +21,7 @@ bool FcImage::read_tga_file(const std::string filename)
 	fio.read(reinterpret_cast<char*> (&header), sizeof(header));
 	if(!fio.good())
 	{
-		std::cerr << "read tga file fail"<<"\n";
+		std::cerr << "read t g a file fail"<<"\n";
 		fio.close();
 		return false;
 	}
@@ -67,12 +67,12 @@ bool FcImage::read_tga_file(const std::string filename)
 }
 
 
-bool FcImage::safe_write(std::ofstream &out,  char*const buffer, size_t write_len) const
+bool FcImage::safe_write(std::ofstream &out,  char const* buffer, size_t write_len) const
 {
 	out.write(buffer, write_len);
 	if(!out.good())
 	{
-		std::cerr<<"write tga file fail"<<std::endl;
+		std::cerr<<"write t g a file fail"<<std::endl;
 		return false;
 	}
 	return true;
@@ -127,7 +127,18 @@ void FcImage::flip_horizontally()
 
 void FcImage::flip_vertically()
 {
-
+	if (width <= 0 || height <= 0)
+		return;
+	size_t row_len = width * bytespp;
+	std::vector<std::uint8_t> row(row_len, 0);
+	for (int i = 0; i <= height / 2; ++i)
+	{
+		auto begin_line = data.data() + i*row_len;
+		auto end_line = data.data() + (height - i - 1)*row_len;
+		memcpy(row.data(), begin_line, row_len);
+		memcpy(begin_line, end_line, row_len);
+		memcpy(end_line, row.data(), row_len);
+	}
 }
 
 void FcImage::set(const int x, const int y, const FcColor &c)

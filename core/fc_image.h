@@ -43,7 +43,7 @@ protected:
     bool load_rle_data(std::ifstream &in);
     bool unload_rle_data(std::ofstream &out) const;
 
-	bool safe_write(std::ofstream &out, char* const buffer, size_t write_len) const;
+	bool safe_write(std::ofstream &out, const char*  buffer, size_t write_len) const;
 
 public:
  	enum Format { GRAYSCALE=1, RGB=3, RGBA=4 };

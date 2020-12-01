@@ -8,6 +8,9 @@ set(CORE
 	core/fc_image.h
 	core/fc_image.cpp
 	core/fc_common.h
+	core/model.h
+	core/model.cpp
+	core/geometry.h
 )
 source_group("core" FILES ${CORE})
 
