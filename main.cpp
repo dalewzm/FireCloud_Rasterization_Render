@@ -11,7 +11,7 @@ const int height = 800;
 void line(int x0, int y0, int x1, int y1, FcImage& image, FcColor color)
 {
 	bool transposed = false;
-	if (std::abs(x0 - x1) < std::abs(x1 - y1))
+	if (std::abs(x0 - x1) < std::abs(y0 - y1))
 	{
 		std::swap(x0, y0);
 		std::swap(x1, y1);
@@ -49,8 +49,6 @@ int main(int argc, char*argv)
 	//Model *model = new Model("res/african_head.obj");
 	Model *model = new Model("res/test.obj");
 	FcImage image(width, height, FcImage::RGB);
-	
-	
 	
 	for (int i = 0; i < model->num_faces(); ++i)
 	{
