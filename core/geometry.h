@@ -22,7 +22,7 @@ struct Vec3 {
 	union
 	{
 		struct {t x, y, z;};
-		struct {t ivert, iuv, inorm};
+		struct { t ivert, iuv, inorm; };
 		t raw[3];
 	};
 	Vec3() :x(0), y(0), z(0) {};

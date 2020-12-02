@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 #include "fc_image.h"
 
 
@@ -141,11 +140,30 @@ void FcImage::flip_vertically()
 	}
 }
 
+
+FcColor FcImage::get(const int x, const int y) const
+{
+	//not complete color, just test whether color
+	return FcColor(*(data.data() + (x + y*width)*bytespp));
+}
+
 void FcImage::set(const int x, const int y, const FcColor &c)
 {
-	if (data.size() <= 0 || width < 0 || height < 0)
+	if (data.size() <= 0 || width < 0 || height < 0 || x >= width || y >= height)
 		return;
 	memcpy(data.data() + (x + y*width)*bytespp, c.bgra, bytespp);
+}
+
+
+int FcImage::get_width() const
+{
+	return width;
+}
+
+
+int FcImage::get_height() const
+{
+	return height;
 }
 
 std::uint8_t * FcImage::buffer()

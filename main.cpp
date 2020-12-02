@@ -1,9 +1,12 @@
 #include "core/fc_common.h"
 #include "crossplatform/window.h"
-
+#include "core/model.h"
+#include <iostream>
 
 const FcColor white = FcColor(255, 255, 255, 255);
 const FcColor red = FcColor(255, 0, 0, 255);
+const int width = 800;
+const int height = 800;
 
 void line(int x0, int y0, int x1, int y1, FcImage& image, FcColor color)
 {
@@ -35,7 +38,7 @@ void line(int x0, int y0, int x1, int y1, FcImage& image, FcColor color)
 		error += derror;
 		if (error > dx)
 		{
-			y += y0 > y1 ? -1 : 1;
+			y += y0 >= y1 ? -1 : 1;
 			error -= 2*dx;
 		}
 	}
@@ -43,13 +46,35 @@ void line(int x0, int y0, int x1, int y1, FcImage& image, FcColor color)
 
 int main(int argc, char*argv)
 {
-	FcImage image(100, 100, FcImage::RGB);
-	line(13, 20, 80, 40, image, white);
-	line(20, 13, 40, 80, image, red);
-	line(80, 40, 13, 20, image, red);
+	//Model *model = new Model("res/african_head.obj");
+	Model *model = new Model("res/test.obj");
+	FcImage image(width, height, FcImage::RGB);
+	
+	
+	
+	for (int i = 0; i < model->num_faces(); ++i)
+	{
+		auto face = model->face(i);
+		//if (face.size() != 3)
+		
+		for (int j = 0; j < 3; ++j)
+		{
+			auto v = model->vert(face[j]);
+			auto v1 = model->vert(face[(j + 1) % 3]);
+			//turn ndc to viewport coordinate
+			int x0 = (v.x + 1.0)*width / 2;
+			int y0 = (v.y + 1.0)*height / 2;
+			int x1 = (v1.x + 1.0)* width / 2;
+			int y1 = (v1.y + 1.0)* height / 2;
+			//fou << x0 <<" "<<x1<<" " <<y0<< " "<<y1<< std::endl;
+			line(x0, y0, x1, y1, image, white);
+		}
+
+	}
+	
 	image.flip_vertically();
 	image.write_tga_file("out.tga", false, false);
-
+	
 	return 0;
 }
 

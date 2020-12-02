@@ -7,7 +7,7 @@
 class Model {
 private:
 	std::vector<Vec3f> verts_;
-	std::vector<std::vector<Vec3f> > surfaces_;
+	std::vector<std::vector<int> > surfaces_;
 public:
 	Model(const char* filename);
 	~Model();
