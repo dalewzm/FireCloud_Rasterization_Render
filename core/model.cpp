@@ -47,6 +47,11 @@ Model::Model(const char* filename)
 	std::cout << "verts:" << verts_.size() << " face num:" << surfaces_.size() << std::endl;
 }
 
+Model::~Model()
+{
+
+}
+
 int Model::num_verts()
 {
 	return verts_.size();

@@ -1,11 +1,33 @@
-#ifndef __CORE_FCIMAGE_H__
-#define __CORE_FCIMAGE_H__
+#ifndef __CORE_TGAIMAGE_H__
+#define __CORE_TGAIMAGE_H__
 // just normal tga image, but use universal names
 // tga file parser
 //http://www.twinklingstar.cn/2013/471/tga-file-format/
 #include <cstdint>
 #include <fstream>
 #include <vector>
+
+
+struct FcColor {
+	std::uint8_t bgra[4] = { 0,0,0,0 };
+	std::uint8_t bytespp = { 0 };
+
+	FcColor() = default;
+	FcColor(const std::uint8_t R, const std::uint8_t G, const std::uint8_t B, const std::uint8_t A = 255) : bgra{ B,G,R,A }, bytespp(4) { }
+	FcColor(const std::uint8_t v) : bgra{ v,0,0,0 }, bytespp(1) { }
+};
+
+struct BaseImage
+{
+	int width;
+	int height;
+	int bpp;
+	unsigned char* buffer;
+	BaseImage() :width(0), height(0), bpp(0), buffer(NULL) {}
+	~BaseImage() { if (buffer) delete buffer; }
+	unsigned char* get_pixel(int r, int c);
+	void set_pixel(int r, int c, const char* color);
+};
 
 #pragma pack(push, 1)
 struct TGA_Header{
@@ -24,16 +46,8 @@ struct TGA_Header{
 };
 #pragma pack(pop)
 
-struct FcColor{
-	std::uint8_t bgra[4] = {0,0,0,0};
-    std::uint8_t bytespp = {0};
 
-    FcColor() = default;
-    FcColor(const std::uint8_t R, const std::uint8_t G, const std::uint8_t B, const std::uint8_t A=255) : bgra{B,G,R,A}, bytespp(4) { }
-    FcColor(const std::uint8_t v) : bgra{v,0,0,0}, bytespp(1) { }
-};
-
-class FcImage{
+class TgaImage{
 protected:
     std::vector<std::uint8_t> data;
     int width;
@@ -48,8 +62,8 @@ protected:
 public:
  	enum Format { GRAYSCALE=1, RGB=3, RGBA=4 };
 
-    FcImage();
-    FcImage(const int w, const int h, const int bpp);
+    TgaImage();
+    TgaImage(const int w, const int h, const int bpp);
     bool read_tga_file(const std::string filename);
     bool write_tga_file(const std::string filename, const bool vflip=true, const bool rle=true) const;
     void flip_horizontally();
@@ -63,8 +77,6 @@ public:
     std::uint8_t *buffer();
 	std::uint8_t *buffer() const;
     void clear();
-
-	
 
 };
 

@@ -16,6 +16,7 @@ source_group("core" FILES ${CORE})
 
 set (PLATFORM
 		crossplatform/window.h
+		crossplatform/win32.cpp
 		)
 source_group("platform" FILES ${PLATFORM})
 

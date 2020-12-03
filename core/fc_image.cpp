@@ -2,12 +2,12 @@
 #include "fc_image.h"
 
 
-FcImage::FcImage(const int w, const int h, const int bpp):width(w),height(h),bytespp(bpp)
+TgaImage::TgaImage(const int w, const int h, const int bpp):width(w),height(h),bytespp(bpp)
 {
 	data.resize(w*h*bpp, 0);
 }
 
-bool FcImage::read_tga_file(const std::string filename)
+bool TgaImage::read_tga_file(const std::string filename)
 {
 	std::fstream fio(filename);
 	if(!fio.is_open())
@@ -66,7 +66,7 @@ bool FcImage::read_tga_file(const std::string filename)
 }
 
 
-bool FcImage::safe_write(std::ofstream &out,  char const* buffer, size_t write_len) const
+bool TgaImage::safe_write(std::ofstream &out,  char const* buffer, size_t write_len) const
 {
 	out.write(buffer, write_len);
 	if(!out.good())
@@ -77,7 +77,7 @@ bool FcImage::safe_write(std::ofstream &out,  char const* buffer, size_t write_l
 	return true;
 }
 
-bool FcImage::write_tga_file(const std::string filename, const bool vfliped, const bool rle) const
+bool TgaImage::write_tga_file(const std::string filename, const bool vfliped, const bool rle) const
 {
 	std::uint8_t developer_area_ref[4] = {0, 0, 0, 0};
 	std::uint8_t extension_area_ref[4] = {0, 0, 0, 0};
@@ -118,13 +118,13 @@ bool FcImage::write_tga_file(const std::string filename, const bool vfliped, con
 }
 
 
-void FcImage::flip_horizontally()
+void TgaImage::flip_horizontally()
 {
 
 }
 
 
-void FcImage::flip_vertically()
+void TgaImage::flip_vertically()
 {
 	if (width <= 0 || height <= 0)
 		return;
@@ -141,13 +141,13 @@ void FcImage::flip_vertically()
 }
 
 
-FcColor FcImage::get(const int x, const int y) const
+FcColor TgaImage::get(const int x, const int y) const
 {
 	//not complete color, just test whether color
 	return FcColor(*(data.data() + (x + y*width)*bytespp));
 }
 
-void FcImage::set(const int x, const int y, const FcColor &c)
+void TgaImage::set(const int x, const int y, const FcColor &c)
 {
 	if (data.size() <= 0 || width < 0 || height < 0 || x >= width || y >= height)
 		return;
@@ -155,23 +155,29 @@ void FcImage::set(const int x, const int y, const FcColor &c)
 }
 
 
-int FcImage::get_width() const
+int TgaImage::get_width() const
 {
 	return width;
 }
 
 
-int FcImage::get_height() const
+int TgaImage::get_height() const
 {
 	return height;
 }
 
-std::uint8_t * FcImage::buffer()
+
+int TgaImage::get_bytespp()
+{
+	return bytespp;
+}
+
+std::uint8_t * TgaImage::buffer()
 {
 	return data.data();
 }
 
-std::uint8_t * FcImage::buffer() const
+std::uint8_t * TgaImage::buffer() const
 {
 	return (std::uint8_t* const)(data.data());
 }
