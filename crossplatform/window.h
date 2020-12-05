@@ -7,9 +7,12 @@ typedef struct window window_t;
 // --window related -------------
 window_t *create_window(const char* title, unsigned int width, unsigned int height);
 
+int window_should_close(window_t* window);
+
 
 void destroy_window(window_t* window_ptr);
-void window_draw_image(window_t *window_ptr, TgaImage* image_ptr);
+void window_draw_image(window_t *window_ptr, TgaImage& image);
+
 void window_draw_buffer(window_t *window_ptr, FcFrameBuffer* fb_ptr );
 // event related ---------------
 void input_poll_events();

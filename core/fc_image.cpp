@@ -144,7 +144,9 @@ void TgaImage::flip_vertically()
 FcColor TgaImage::get(const int x, const int y) const
 {
 	//not complete color, just test whether color
-	return FcColor(*(data.data() + (x + y*width)*bytespp));
+	auto base = data.data() + (x + y * width) * bytespp;
+	auto b = base[0], r=base[2], g=base[1],a=base[3];
+	return FcColor(b,g,r,a);
 }
 
 void TgaImage::set(const int x, const int y, const FcColor &c)

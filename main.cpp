@@ -5,8 +5,8 @@
 
 const FcColor white = FcColor(255, 255, 255, 255);
 const FcColor red = FcColor(255, 0, 0, 255);
-const int width = 250;
-const int height = 250;
+const int width = 300;
+const int height = 300;
 
 void line(int x0, int y0, int x1, int y1, TgaImage& image, FcColor color)
 {
@@ -96,20 +96,53 @@ void test_wireframe_mode(TgaImage& image)
 }
 
 
+class App
+{
+public:
+	App():main_window(nullptr),buffer(width, height, TgaImage::RGB){}
+	bool setup_render_context()
+	{
+		main_window = create_window("test", 300, 300);
+		if (main_window) {
+			Vec2i t0[3] = { Vec2i(10, 70),   Vec2i(50, 160),  Vec2i(70, 80) };
+			Vec2i t1[3] = { Vec2i(180, 50),  Vec2i(150, 1),   Vec2i(70, 180) };
+			Vec2i t2[3] = { Vec2i(180, 150), Vec2i(120, 160), Vec2i(130, 180) };
+			triangle(t0[0], t0[1], t0[2], buffer, red);
+			triangle(t1[0], t1[1], t1[2], buffer, white);
+			buffer.flip_vertically();
+			//buffer.write_tga_file("out.tga", false, false);
+			return true;
+		}
+		return false;
+	}
+	void main_loop()
+	{
+		if (setup_render_context())
+		{
+			while (!window_should_close(main_window))
+			{
+				window_draw_image(main_window, buffer);
+			}
+		}
+	}
+private:
+	window_t* main_window;
+	TgaImage buffer;
+};
+
+
+
 int main(int argc, char*argv)
 {
 	//Model *model = new Model("res/african_head.obj");
 
-	TgaImage image(width, height, TgaImage::RGB);
-	Vec2i t0[3] = { Vec2i(10, 70),   Vec2i(50, 160),  Vec2i(70, 80) };
-	Vec2i t1[3] = { Vec2i(180, 50),  Vec2i(150, 1),   Vec2i(70, 180) };
-	Vec2i t2[3] = { Vec2i(180, 150), Vec2i(120, 160), Vec2i(130, 180) };
-	triangle(t0[0], t0[1], t0[2], image, red);
-	triangle(t1[0], t1[1], t1[2], image, white);
+	//TgaImage image(width, height, TgaImage::RGB);
 	
+	App app;
+	app.main_loop();
 	
-	image.flip_vertically();
-	image.write_tga_file("out.tga", false, false);
+	//image.flip_vertically();
+	//image.write_tga_file("out.tga", false, false);
 	
 	return 0;
 }
